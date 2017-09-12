@@ -1,7 +1,7 @@
-package com.example.database;
+package com.example.messenger.database;
 
-import com.example.model.Message;
-import com.example.model.Profile;
+import com.example.messenger.model.Message;
+import com.example.messenger.model.Profile;
 
 import java.util.HashMap;
 import java.util.Map;

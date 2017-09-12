@@ -1,7 +1,7 @@
-package com.example.service;
+package com.example.messenger.service;
 
-import com.example.database.DatabaseClass;
-import com.example.model.Message;
+import com.example.messenger.database.DatabaseClass;
+import com.example.messenger.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;

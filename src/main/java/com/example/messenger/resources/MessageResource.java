@@ -1,7 +1,7 @@
-package com.example.resources;
+package com.example.messenger.resources;
 
-import com.example.model.Message;
-import com.example.service.MessageService;
+import com.example.messenger.model.Message;
+import com.example.messenger.service.MessageService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

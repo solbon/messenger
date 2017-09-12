@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.messenger.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
