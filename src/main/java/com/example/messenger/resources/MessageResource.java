@@ -1,6 +1,7 @@
 package com.example.messenger.resources;
 
 import com.example.messenger.model.Message;
+import com.example.messenger.resources.beans.MessageFilterBean;
 import com.example.messenger.service.MessageService;
 
 import javax.ws.rs.*;
@@ -18,13 +19,11 @@ public class MessageResource {
     MessageService service = new MessageService();
 
     @GET
-    public List<Message> getMessages(@QueryParam("year") int year,
-                                     @QueryParam("start") int start,
-                                     @QueryParam("size") int size) {
-        if (year > 0)
-            return service.getAllMessagesForYear(year);
-        if (start >= 0 && size > 0)
-            return service.getAllMessagesPaginated(start, size);
+    public List<Message> getMessages(@BeanParam MessageFilterBean filterBean) {
+        if (filterBean.getYear() > 0)
+            return service.getAllMessagesForYear(filterBean.getYear());
+        if (filterBean.getStart() >= 0 && filterBean.getSize() > 0)
+            return service.getAllMessagesPaginated(filterBean.getStart(), filterBean.getSize());
         return service.getAllMessages();
     }
 
