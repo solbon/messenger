@@ -1,6 +1,5 @@
 package com.example.messenger.resources;
 
-import com.example.messenger.model.Link;
 import com.example.messenger.model.Message;
 import com.example.messenger.resources.beans.MessageFilterBean;
 import com.example.messenger.service.MessageService;
@@ -11,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -25,7 +23,20 @@ public class MessageResource {
     MessageService service = new MessageService();
 
     @GET
-    public List<Message> getMessages(@BeanParam MessageFilterBean filterBean) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Message> getJsonMessages(@BeanParam MessageFilterBean filterBean) {
+        System.out.println("JSON method called");
+        if (filterBean.getYear() > 0)
+            return service.getAllMessagesForYear(filterBean.getYear());
+        if (filterBean.getStart() >= 0 && filterBean.getSize() > 0)
+            return service.getAllMessagesPaginated(filterBean.getStart(), filterBean.getSize());
+        return service.getAllMessages();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_XML)
+    public List<Message> getXmlMessages(@BeanParam MessageFilterBean filterBean) {
+        System.out.println("XML method called");
         if (filterBean.getYear() > 0)
             return service.getAllMessagesForYear(filterBean.getYear());
         if (filterBean.getStart() >= 0 && filterBean.getSize() > 0)
