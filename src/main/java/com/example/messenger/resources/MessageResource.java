@@ -1,5 +1,6 @@
 package com.example.messenger.resources;
 
+import com.example.messenger.model.Link;
 import com.example.messenger.model.Message;
 import com.example.messenger.resources.beans.MessageFilterBean;
 import com.example.messenger.service.MessageService;
@@ -34,8 +35,36 @@ public class MessageResource {
 
     @GET
     @Path("/{messageId}")
-    public Message getMessage(@PathParam ("messageId") Long messageId) {
-        return service.getMessage(messageId);
+    public Message getMessage(@PathParam ("messageId") Long messageId, @Context UriInfo uriInfo) {
+        Message message = service.getMessage(messageId);
+        message.addLink(getUriForSelf(uriInfo, message), "self");
+        message.addLink(getUriForProfile(uriInfo, message), "profile");
+        message.addLink(getUriForComments(uriInfo, message), "comments");
+        return message;
+    }
+
+    private String getUriForSelf(UriInfo uriInfo, Message message) {
+        return uriInfo.getBaseUriBuilder()
+                    .path(MessageResource.class)
+                    .path(Long.toString(message.getId()))
+                    .build()
+                    .toString();
+    }
+
+    private String getUriForProfile(UriInfo uriInfo, Message message) {
+        return uriInfo.getBaseUriBuilder()
+                .path(ProfileResource.class)
+                .path(message.getAuthor())
+                .build().toString();
+    }
+
+    private String getUriForComments(UriInfo uriInfo, Message message) {
+        return uriInfo.getBaseUriBuilder()
+                .path(MessageResource.class)
+                .path(MessageResource.class, "getCommentResource")
+                .path(CommentResource.class)
+                .resolveTemplate("messageId", message.getId())
+                .build().toString();
     }
 
     @PUT
